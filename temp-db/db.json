@@ -1,0 +1,17 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "dhinta",
+            "password": "123456"
+        },
+        {
+            "id": 2,
+            "username": "frodoBaggins",
+            "password": "123456"
+        }
+    ],
+    "folders": [],
+    "files": [],
+    "assets": []
+}
