@@ -1,0 +1,66 @@
+.time {
+    color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 0 0 2% 2%;
+    vertical-align: auto;
+    /* Safari */
+    -webkit-user-select: none;
+    /* Firefox */
+    -moz-user-select: none;
+    /* IE10+/Edge */
+    -ms-user-select: none;
+    /* Standard */
+    user-select: none;
+}
+
+.time.hide {
+    opacity: 0;
+    transform: scale(1.2);
+    transition-duration: 0.2s;
+    display: none;
+}
+
+.clock {
+    font-size: 6vw;
+    font-weight: lighter;
+}
+
+.date {
+    font-size: 2.6vw;
+    font-weight: lighter;
+}
+
+@media screen and (max-width: 600px) {
+    .time {
+        padding: 0 0 10% 2%;
+    }
+
+    .clock {
+        font-size: 12vw;
+        font-weight: lighter;
+    }
+
+    .date {
+        font-size: 4.3vw;
+        font-weight: lighter;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .time {
+        padding: 0 0 24% 4%;
+    }
+
+    .clock {
+        font-size: 30vw;
+        font-weight: lighter;
+    }
+
+    .date {
+        margin-top: -20px;
+        font-size: 8vw;
+        font-weight: lighter;
+    }
+}

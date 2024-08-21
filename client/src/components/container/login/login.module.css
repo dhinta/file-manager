@@ -1,0 +1,161 @@
+.login {
+    left: 0;
+    top: 0;
+    opacity: 1;
+    transition-duration: 0.5s;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.userInput {
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin: 30vh 0;
+}
+
+.loginBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profileIcon {
+    border-radius: 50%;
+    width: 176px;
+    height: auto;
+}
+
+.name {
+    font-size: 42px;
+    color: white;
+    font-weight: lighter;
+    margin: 1.5vh 0;
+}
+
+.formInput {
+    height: 34px;
+    width: 270px;
+    border: none;
+    padding: 0 7px;
+    margin: 10px 0 0 0;
+    -webkit-box-shadow: inset 0px 0px 0px 2px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: inset 0px 0px 0px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0px 0px 0px 2px rgba(0, 0, 0, 0.5);
+}
+
+.formInput.error {
+    animation: horizontal-shaking 0.5s;
+}
+
+@keyframes horizontal-shaking {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(10px);
+    }
+    50% {
+        transform: translateX(-10px);
+    }
+    75% {
+        transform: translateX(10px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.formInput:hover {
+    -webkit-box-shadow: unset;
+    -moz-box-shadow: unset;
+    box-shadow: unset;
+}
+
+.formInput:focus {
+    outline-width: 0;
+}
+
+.forget,
+.options {
+    text-decoration: none;
+    cursor: pointer;
+    width: fit-content;
+    margin: 20px auto;
+}
+
+.forget:hover,
+.options:hover {
+    color: lightgray;
+}
+
+.wrongPassword {
+    display: none;
+}
+
+.okButton {
+    color: white;
+    width: 100px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 1px solid black;
+}
+
+.okButton:hover {
+    cursor: pointer;
+    -webkit-box-shadow: inset 0px 0px 0px 2px rgba(255, 255, 255, 0.5);
+    -moz-box-shadow: inset 0px 0px 0px 2px rgba(255, 255, 255, 0.5);
+    box-shadow: inset 0px 0px 0px 2px rgba(255, 255, 255, 0.5);
+}
+
+.okButton:focus {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.okButton:focus {
+    outline-width: 0;
+}
+
+.okButtonBorder {
+    margin: 0 auto;
+    width: 100px;
+    border: 2px solid white;
+}
+
+@media screen and (max-width: 480px) {
+    .userInput {
+        margin: 12vh 0;
+    }
+}
+
+@media screen and (max-height: 556px) and (orientation: landscape) {
+    .userInput {
+        margin-top: -3vh;
+        transform: scale(0.75);
+    }
+}
+
+@media screen and (max-height: 556px) and (orientation: landscape) {
+    .userInput {
+        margin-top: -3vh;
+        transform: scale(0.75);
+    }
+}
+
+@media screen and (min-width: 2560px) {
+    .userInput {
+        margin: 50vh 0;
+        transform: scale(1.5);
+    }
+}
+
+@media screen and (min-width: 3840px) {
+    .userInput {
+        margin: 96vh 0;
+        transform: scale(2.4);
+    }
+}

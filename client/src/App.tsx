@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import { Login } from './components/container/login/login';
+import { DateTime } from './components/ui/date-time/date-time';
+import useKeyDown from './hooks/key-down';
+import { KeyCode } from './models/key-code';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [showLogin, setShowLogin] = useState(false);
+    useKeyDown(KeyCode.ESC, () => setShowLogin(false));
+    useKeyDown([KeyCode.SPACE, KeyCode.ENTER], () => setShowLogin(true));
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        <div
+            className={`background ${showLogin ? 'active' : ''}`}
+            onClick={() => setShowLogin(true)}
+        >
+            <div className="background-image"></div>
+
+            {!showLogin && <DateTime />}
+
+            <div className={`background-info ${showLogin ? 'hide' : ''}`}>
+                <a href="https://support.microsoft.com/en-us/help/18826/natural-wonders-wallpaper">
+                    Background: Dolomites at Sunrise (Italy)
+                </a>
+            </div>
+
+            {showLogin && <Login />}
+        </div>
+    );
 }
 
-export default App
+export default App;
