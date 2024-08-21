@@ -1,10 +1,10 @@
 import { KeyCode } from '../models/key-code';
 
-export default function useKeyDown(
+export default function useKeyUp(
     code: KeyCode | KeyCode[],
     callback: () => void
 ) {
-    const onKeyDown = (event: KeyboardEvent) => {
+    const onKeyUp = (event: KeyboardEvent) => {
         if (isArray(code) && code.includes(<KeyCode>event.code)) {
             callback();
             return;
@@ -14,9 +14,9 @@ export default function useKeyDown(
         }
     };
 
-    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keyup', onKeyUp);
 
-    return () => document.removeEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keyup', onKeyUp);
 }
 
 function isArray(code: KeyCode | KeyCode[]): code is KeyCode[] {

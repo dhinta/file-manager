@@ -1,0 +1,83 @@
+.background {
+    overflow: hidden;
+    z-index: -1;
+    position: fixed;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transition-duration: 0.5s;
+}
+
+.background.active {
+    transform: scale(1.05);
+}
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    background: url(public/images/background.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.background-info {
+    display: block;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 0 2% 2% 0;
+    z-index: 2;
+}
+
+.background-info.hide {
+    opacity: 0;
+    transform: scale(1.2);
+    transition-duration: 0.2s;
+}
+
+.background-info a {
+    font-size: 1.2vw;
+    text-align: right;
+    vertical-align: bottom;
+    color: white;
+    text-decoration: none;
+}
+
+.background-info a:hover {
+    color: lightgray;
+}
+
+@media screen and (max-width: 996px) {
+    .background-info {
+        margin: 0 3% 8.5% 0;
+    }
+
+    .background-info a {
+        font-size: 1.6vw;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .background-info {
+        margin: 0 4% 10.5% 0;
+    }
+
+    .background-info a {
+        font-size: 2vw;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .background-info {
+        left: 0;
+        margin: 0 0 15% 4%;
+    }
+
+    .background-info a {
+        font-size: 3.6vw;
+    }
+}
