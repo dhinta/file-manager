@@ -1,0 +1,8 @@
+.brightnessIcon {
+    background-image: url(/public/images/brightness.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20px 20px;
+    width: 40px;
+    height: 28px;
+}

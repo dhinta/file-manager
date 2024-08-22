@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useSessionStorage from '../../../hooks/session-storage';
 import { getInitials } from '../../../utils/common';
 import styles from './login.module.css';
@@ -17,6 +18,7 @@ export function Login(): JSX.Element {
     });
     const userNameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
 
     const loggedInUserStorage = useSessionStorage();
     const loggedInUserName = getInitials(
@@ -32,7 +34,7 @@ export function Login(): JSX.Element {
 
         const { username, password } = formData;
 
-        if (username === '') {
+        if (username === '' && loggedInUserName === '') {
             userNameRef.current?.classList.add(styles.error);
             removeErrorClass(userNameRef.current);
             return;
@@ -42,41 +44,44 @@ export function Login(): JSX.Element {
             return;
         }
 
-        loggedInUserStorage.set(initialsSessionKey, username);
+        if (!loggedInUserName) {
+            loggedInUserStorage.set(initialsSessionKey, username);
+        }
+        navigate('/dashboard');
     };
 
     return (
         <div className={styles.login}>
             <div className={styles.userInput}>
                 <div className={styles.loginBox}>
-                    <div
-                        className={`flex flex-col align-center ${loggedInUserName ? '' : 'hidden'}`}
-                    >
-                        <img
-                            className={styles.profileIcon}
-                            src="public/images/icon.png"
-                        />
-                        <p className={styles.name}>{loggedInUserName}</p>
-                    </div>
+                    {loggedInUserName && (
+                        <div className="flex flex-col align-center">
+                            <img
+                                src="public/images/icon.png"
+                                className={styles.profileIcon}
+                            />
+                            <p className={styles.name}>{loggedInUserName}</p>
+                        </div>
+                    )}
                     <form onSubmit={handleSubmit} className="flex flex-col">
-                        <p
-                            className={`${styles.name} ${loggedInUserName ? 'hidden' : ''}`}
-                        >
-                            Login
-                        </p>
-                        <input
-                            placeholder="Username"
-                            className={`${styles.formInput}  ${loggedInUserName ? 'hidden' : ''}`}
-                            autoFocus
-                            ref={userNameRef}
-                            value={formData.username}
-                            onChange={(event) =>
-                                setFormData((data) => ({
-                                    ...data,
-                                    username: event.target.value,
-                                }))
-                            }
-                        />
+                        {!loggedInUserName && (
+                            <>
+                                <p className={styles.name}>Login</p>
+                                <input
+                                    placeholder="Username"
+                                    className={styles.formInput}
+                                    autoFocus
+                                    ref={userNameRef}
+                                    value={formData.username}
+                                    onChange={(event) =>
+                                        setFormData((data) => ({
+                                            ...data,
+                                            username: event.target.value,
+                                        }))
+                                    }
+                                />
+                            </>
+                        )}
                         <input
                             type="password"
                             className={styles.formInput}
