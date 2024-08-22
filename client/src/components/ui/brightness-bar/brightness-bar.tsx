@@ -20,7 +20,6 @@ export default function BrightnessBar({ onClose }: Props): JSX.Element {
                 <div className={styles.brightnessIcon}></div>
                 <input
                     type="range"
-                    min={20}
                     value={brightness}
                     onChange={(e) => setBrightness(Number(e.target.value))}
                     className="w-2/3 h-2 bg-gray-200 rounded-lg cursor-pointer dark:bg-gray-700"
