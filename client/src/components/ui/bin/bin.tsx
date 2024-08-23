@@ -14,12 +14,10 @@ export default function Bin({ type = 'empty' }: Props): JSX.Element {
     }, [images]);
 
     return (
-        <div className="w-16">
-            <img
-                src={`/public/images/${type}-bin.png`}
-                alt="Windows Logo"
-                width={'100%'}
-            />
+        <div className="w-12 cursor-pointer">
+            <a href="#">
+                <img src={`/public/images/${type}-bin.png`} width={'100%'} />
+            </a>
         </div>
     );
 }
