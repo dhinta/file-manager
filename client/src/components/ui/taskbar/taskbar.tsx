@@ -10,14 +10,6 @@ export default function Taskbar(): JSX.Element {
     const [showBrightnessBar, setShowBrightnessBar] = useState(false);
     const [currentDateTime, setCurrentDateTime] = useState<CurrentDateTime>();
     const navigate = useNavigate();
-
-    const brightnessWindowPortal =
-        showBrightnessBar &&
-        createPortal(
-            <BrightnessBar onClose={() => setShowBrightnessBar(false)} />,
-            document.body
-        );
-
     const onDateTimeChange = useCallback(
         ({ currentDate, currentTime }: CurrentDateTime) =>
             setCurrentDateTime({ currentDate, currentTime }),
@@ -25,6 +17,13 @@ export default function Taskbar(): JSX.Element {
     );
 
     useClock(onDateTimeChange);
+
+    const brightnessWindowPortal =
+        showBrightnessBar &&
+        createPortal(
+            <BrightnessBar onClose={() => setShowBrightnessBar(false)} />,
+            document.body
+        );
 
     return (
         <>

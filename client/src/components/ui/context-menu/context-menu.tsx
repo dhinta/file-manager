@@ -56,16 +56,18 @@ function adjustOnViewPort(
     rect: DOMRect,
     styles: ContextMenuStyles
 ): ContextMenuStyles {
-    const bottom = rect.bottom > window.innerHeight;
-    const right = rect.right > window.innerWidth;
+    let top = Number(styles.top.replace('px', ''));
+    let left = Number(styles.left.replace('px', ''));
 
-    let { top, left } = styles;
-    if (bottom) {
-        top = `${rect.top - rect.height}px`;
+    const hasExceedBottomBoundary = top + rect.height > window.innerHeight;
+    const hasExceedRightBoundary = left + rect.width > window.innerWidth;
+
+    if (hasExceedBottomBoundary) {
+        top = top - rect.height;
     }
-    if (right) {
-        left = `${rect.left - rect.width}px`;
+    if (hasExceedRightBoundary) {
+        left = left - rect.width;
     }
 
-    return { top, left };
+    return { top: `${top}px`, left: `${left}px` };
 }

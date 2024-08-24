@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import useRightClick from '../../../hooks/right-click';
 import {
@@ -9,11 +9,12 @@ import Bin from '../../ui/bin/bin';
 import ContextMenu from '../../ui/context-menu/context-menu';
 
 export default function Desktop(): JSX.Element {
+    const ref = useRef<HTMLElement>()!;
     const [styles, setStyles] = useState<ContextMenuStyles | null>(null);
 
     useRightClick((left, top) => {
         setStyles({ left: `${left}px`, top: `${top}px` });
-    });
+    }, ref.current!);
 
     const contextMenuPortal =
         styles &&
@@ -30,6 +31,7 @@ export default function Desktop(): JSX.Element {
         <>
             {contextMenuPortal}
             <div
+                ref={ref as React.RefObject<HTMLDivElement>}
                 className="flex h-screen bg-center bg-cover p-4"
                 style={{
                     backgroundImage: `url(public/images/windows-10-wallpaper.webp)`,

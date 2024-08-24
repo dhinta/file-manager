@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 
 export default function useRightClick(
-    callback: (clientX: number, clientY: number) => void
+    callback: (clientX: number, clientY: number) => void,
+    element: HTMLElement = document.body
 ) {
     useEffect(() => {
         const handler = (event: MouseEvent) => {
@@ -10,8 +11,9 @@ export default function useRightClick(
 
             callback(clientX, clientY);
         };
-        document.addEventListener('contextmenu', handler);
 
-        return () => document.removeEventListener('contextmenu', handler);
-    }, [callback]);
+        element.addEventListener('contextmenu', handler);
+
+        return () => element.removeEventListener('contextmenu', handler);
+    }, [callback, element]);
 }
