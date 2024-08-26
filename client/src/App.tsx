@@ -27,7 +27,6 @@ function App() {
           )
         : null;
 
-    console.log(state);
     return (
         <>
             {contextMenuPortal}

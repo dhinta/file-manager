@@ -1,7 +1,9 @@
-import { useCallback, useState } from 'react';
+import { MouseEvent, useCallback, useContext, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
+import { MenuContext } from '../../../context/menu-context';
 import useClock from '../../../hooks/clock';
+import { ContextMenuActionType } from '../../../models/context-menu';
 import { CurrentDateTime } from '../../../utils/common';
 import BrightnessBar from '../brightness-bar/brightness-bar';
 import styles from './taskbar.module.css';
@@ -9,6 +11,7 @@ import styles from './taskbar.module.css';
 export default function Taskbar(): JSX.Element {
     const [showBrightnessBar, setShowBrightnessBar] = useState(false);
     const [currentDateTime, setCurrentDateTime] = useState<CurrentDateTime>();
+    const { dispatch } = useContext(MenuContext);
     const navigate = useNavigate();
     const onDateTimeChange = useCallback(
         ({ currentDate, currentTime }: CurrentDateTime) =>
@@ -17,6 +20,12 @@ export default function Taskbar(): JSX.Element {
     );
 
     useClock(onDateTimeChange);
+
+    const closeContextMenu = (e: MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dispatch({ type: ContextMenuActionType.CLICK, payload: { items: [] } });
+    };
 
     const brightnessWindowPortal =
         showBrightnessBar &&
@@ -28,7 +37,11 @@ export default function Taskbar(): JSX.Element {
     return (
         <>
             {brightnessWindowPortal}
-            <div className="flex fixed w-full left-0 bottom-0 h-11 bg-cyan-950 justify-between">
+            <div
+                className="flex fixed w-full left-0 bottom-0 h-11 bg-cyan-950 justify-between"
+                onClick={closeContextMenu}
+                onContextMenu={closeContextMenu}
+            >
                 <div className="flex">
                     <button
                         className={`${styles.btn} ${styles.invert}`}
