@@ -1,43 +1,52 @@
-import { useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import useRightClick from '../../../hooks/right-click';
+import { MouseEvent, useContext, useRef } from 'react';
+import { MenuContext } from '../../../context/menu-context';
 import {
-    ContextMenuStyles,
+    ContextMenuActionType,
     DESKTOP_CONTEXT_MENU_ITEMS,
 } from '../../../models/context-menu';
 import Bin from '../../ui/bin/bin';
-import ContextMenu from '../../ui/context-menu/context-menu';
 
 export default function Desktop(): JSX.Element {
     const ref = useRef<HTMLElement>()!;
-    const [styles, setStyles] = useState<ContextMenuStyles | null>(null);
+    const { dispatch } = useContext(MenuContext);
 
-    useRightClick((left, top) => {
-        setStyles({ left: `${left}px`, top: `${top}px` });
-    }, ref.current!);
+    const onDesktopRightClick = (e: MouseEvent) => {
+        e.preventDefault();
+        dispatch({
+            type: ContextMenuActionType.RIGHT_CLICK,
+            payload: {
+                event: {
+                    left: e.clientX,
+                    top: e.clientY,
+                },
+                items: [...DESKTOP_CONTEXT_MENU_ITEMS],
+            },
+        });
+    };
 
-    const contextMenuPortal =
-        styles &&
-        createPortal(
-            <ContextMenu
-                items={[...DESKTOP_CONTEXT_MENU_ITEMS]}
-                styles={styles}
-                closeContextMenu={() => setStyles(null)}
-            />,
-            document.body
-        );
+    const onDesktopClick = () => {
+        dispatch({
+            type: ContextMenuActionType.CLICK,
+            payload: {
+                items: [],
+            },
+        });
+    };
 
     return (
         <>
-            {contextMenuPortal}
             <div
                 ref={ref as React.RefObject<HTMLDivElement>}
-                className="flex h-screen bg-center bg-cover p-4"
+                className="h-screen bg-center bg-cover p-4"
                 style={{
                     backgroundImage: `url(public/images/windows-10-wallpaper.webp)`,
                 }}
+                onContextMenu={onDesktopRightClick}
+                onClick={onDesktopClick}
             >
-                <Bin type="empty" />
+                <div className="inline-flex">
+                    <Bin type="empty" />
+                </div>
             </div>
         </>
     );

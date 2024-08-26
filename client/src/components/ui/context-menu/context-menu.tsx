@@ -1,21 +1,15 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import {
+    ContextMenuClientRect,
     ContextMenuProps,
-    ContextMenuStyles,
 } from '../../../models/context-menu';
 
 export default function ContextMenu({
     items,
     styles,
-    closeContextMenu,
 }: ContextMenuProps): JSX.Element {
     const ref = useRef<HTMLDivElement>(null);
-    const [position, setPosition] = useState<ContextMenuStyles | null>(styles);
-
-    useEffect(() => {
-        document.addEventListener('click', closeContextMenu);
-        return () => document.removeEventListener('click', closeContextMenu);
-    }, [closeContextMenu]);
+    const [position, setPosition] = useState<ContextMenuClientRect>(styles);
 
     useLayoutEffect(() => {
         if (ref.current && styles) {
@@ -54,10 +48,10 @@ export default function ContextMenu({
 
 function adjustOnViewPort(
     rect: DOMRect,
-    styles: ContextMenuStyles
-): ContextMenuStyles {
-    let top = Number(styles.top.replace('px', ''));
-    let left = Number(styles.left.replace('px', ''));
+    styles: ContextMenuClientRect
+): ContextMenuClientRect {
+    let top = Number(styles.top);
+    let left = Number(styles.left);
 
     const hasExceedBottomBoundary = top + rect.height > window.innerHeight;
     const hasExceedRightBoundary = left + rect.width > window.innerWidth;
@@ -69,5 +63,5 @@ function adjustOnViewPort(
         left = left - rect.width;
     }
 
-    return { top: `${top}px`, left: `${left}px` };
+    return { top, left };
 }

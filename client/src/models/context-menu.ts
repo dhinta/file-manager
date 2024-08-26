@@ -1,6 +1,16 @@
-export interface ContextMenuStyles {
-    left: string;
-    top: string;
+export interface ContextMenuClientRect {
+    left: number;
+    top: number;
+}
+
+export enum ContextMenuActionType {
+    CLICK = 'click',
+    RIGHT_CLICK = 'contextmenu',
+}
+
+export interface ContextMenuAction {
+    type: ContextMenuActionType;
+    payload: Partial<ContextMenuState>;
 }
 
 export interface ContextMenuItem {
@@ -9,9 +19,13 @@ export interface ContextMenuItem {
 }
 
 export interface ContextMenuProps {
-    styles: ContextMenuStyles | null;
+    styles: ContextMenuClientRect;
     items: ContextMenuItem[];
-    closeContextMenu: () => void;
+}
+
+export interface ContextMenuState {
+    event: ContextMenuClientRect;
+    items: ContextMenuItem[];
 }
 
 export const DESKTOP_CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
@@ -31,6 +45,15 @@ export const DESKTOP_CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
         text: 'Change Background',
         onSelect: () => {
             console.log('Change Background');
+        },
+    },
+];
+
+export const BIN_CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
+    {
+        text: 'Empty Bin',
+        onSelect: () => {
+            console.log('Empty Bin');
         },
     },
 ];
