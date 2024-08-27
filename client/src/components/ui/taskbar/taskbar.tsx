@@ -22,7 +22,6 @@ export default function Taskbar(): JSX.Element {
     useClock(onDateTimeChange);
 
     const closeContextMenu = (e: MouseEvent) => {
-        e.preventDefault();
         e.stopPropagation();
         dispatch({ type: ContextMenuActionType.CLICK, payload: { items: [] } });
     };
@@ -56,10 +55,32 @@ export default function Taskbar(): JSX.Element {
                         className={`${styles.search} ${styles.btn} ${styles.btnBg}`}
                     ></button>
                 </div>
-                <div className="flex mr-8">
+                <div className="flex mr-8 justify-center">
+                    <div
+                        className={`${styles.linkedIn} mr-2 flex justify-center items-center`}
+                    >
+                        <a
+                            href="https://www.linkedin.com/in/debasish-chowdhury"
+                            target="_blank"
+                            className="w-full h-full"
+                            rel="noopener noreferrer"
+                        ></a>
+                    </div>
+
+                    <div
+                        className={`${styles.github} mr-1 flex justify-center items-center`}
+                    >
+                        <a
+                            href="https://github.com/dhinta/file-manager"
+                            target="_blank"
+                            className="w-full h-full"
+                            rel="noopener noreferrer"
+                        ></a>
+                    </div>
+
                     <button
                         onClick={() => setShowBrightnessBar((prev) => !prev)}
-                        className={`${styles.brightness} ${styles.btn} ${styles.btnBg} mr-2`}
+                        className={`${styles.brightness} ${styles.btn} ${styles.btnBg}`}
                     ></button>
                     {currentDateTime && (
                         <div className={`${styles.datetime} pt-1`}>

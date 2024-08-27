@@ -5,6 +5,7 @@ import {
     DESKTOP_CONTEXT_MENU_ITEMS,
 } from '../../../models/context-menu';
 import Bin from '../../ui/bin/bin';
+import Dir from '../../ui/dir/dir';
 
 export default function Desktop(): JSX.Element {
     const { dispatch } = useContext(MenuContext);
@@ -41,8 +42,9 @@ export default function Desktop(): JSX.Element {
             onContextMenu={onDesktopRightClick}
             onClick={onDesktopClick}
         >
-            <div className="inline-flex">
+            <div className="inline-flex flex-col gap-8">
                 <Bin type="empty" />
+                <Dir />
             </div>
         </div>
     );

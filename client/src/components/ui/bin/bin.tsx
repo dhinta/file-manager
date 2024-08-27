@@ -43,10 +43,15 @@ export default function Bin({ type = 'empty' }: Props): JSX.Element {
     };
 
     return (
-        <div className="w-12" onContextMenu={onBinRightClick} onClick={onClick}>
-            <a href="#">
-                <img src={`/public/images/${type}-bin.png`} width={'100%'} />
-            </a>
+        <div
+            className="w-12 flex justify-center items-center"
+            onContextMenu={onBinRightClick}
+            onClick={onClick}
+        >
+            <button>
+                <img src={`/public/images/${type}-bin.png`} alt="bin" />
+                <div className="text-white text-xs mt-1">Bin</div>
+            </button>
         </div>
     );
 }

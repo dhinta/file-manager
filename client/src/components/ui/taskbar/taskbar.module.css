@@ -44,3 +44,18 @@
 .smallText {
     font-size: 10px;
 }
+
+.github {
+    background-image: url(/public/images/github.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 30px;
+    filter: invert(1);
+}
+
+.linkedIn {
+    background-image: url(/public/images/linkedin.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 30px;
+}

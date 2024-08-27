@@ -13,47 +13,51 @@ export interface ContextMenuAction {
     payload: Partial<ContextMenuState>;
 }
 
-export interface ContextMenuItem {
-    text: string;
-    onSelect: () => void;
-}
-
-export interface ContextMenuProps {
-    styles: ContextMenuClientRect;
-    items: ContextMenuItem[];
-}
-
 export interface ContextMenuState {
     event: ContextMenuClientRect;
     items: ContextMenuItem[];
 }
 
+export enum ContextMenuItemType {
+    NEW_FILE = 'New File',
+    NEW_FOLDER = 'New Folder',
+    CHANGE_BACKGROUND = 'Change Background',
+    OPEN = 'Open',
+    EMPTY_BIN = 'Empty Bin',
+    RESTORE = 'Restore items',
+}
+
+export interface ContextMenuItem {
+    text: string;
+    type: ContextMenuItemType;
+}
+
 export const DESKTOP_CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
     {
         text: 'New File',
-        onSelect: () => {
-            console.log('New file');
-        },
+        type: ContextMenuItemType.NEW_FILE,
     },
     {
         text: 'New Folder',
-        onSelect: () => {
-            console.log('New Folder');
-        },
+        type: ContextMenuItemType.NEW_FOLDER,
     },
     {
         text: 'Change Background',
-        onSelect: () => {
-            console.log('Change Background');
-        },
+        type: ContextMenuItemType.CHANGE_BACKGROUND,
     },
 ];
 
 export const BIN_CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
     {
+        text: 'Open',
+        type: ContextMenuItemType.OPEN,
+    },
+    {
         text: 'Empty Bin',
-        onSelect: () => {
-            console.log('Empty Bin');
-        },
+        type: ContextMenuItemType.EMPTY_BIN,
+    },
+    {
+        text: 'Restore items',
+        type: ContextMenuItemType.RESTORE,
     },
 ];

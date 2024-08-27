@@ -1,25 +1,25 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import {
     ContextMenuClientRect,
-    ContextMenuProps,
+    ContextMenuState,
 } from '../../../models/context-menu';
 
 export default function ContextMenu({
     items,
-    styles,
-}: ContextMenuProps): JSX.Element {
+    event,
+}: ContextMenuState): JSX.Element {
     const ref = useRef<HTMLDivElement>(null);
-    const [position, setPosition] = useState<ContextMenuClientRect>(styles);
+    const [position, setPosition] = useState<ContextMenuClientRect>(event);
 
     useLayoutEffect(() => {
-        if (ref.current && styles) {
+        if (ref.current && event) {
             const pos = adjustOnViewPort(
                 ref.current?.getBoundingClientRect(),
-                styles
+                event
             );
             setPosition(pos);
         }
-    }, [styles]);
+    }, [event]);
 
     return (
         <div
@@ -35,7 +35,7 @@ export default function ContextMenu({
                     <li key={index}>
                         <button
                             className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left"
-                            onClick={item.onSelect}
+                            onClick={() => console.log(item, position)}
                         >
                             {item.text}
                         </button>
