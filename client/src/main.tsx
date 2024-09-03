@@ -5,7 +5,9 @@ import './index.css';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <App />
+        <div id="app-container">
+            <App />
+        </div>
         <div id="context-menu"></div>
     </StrictMode>
 );

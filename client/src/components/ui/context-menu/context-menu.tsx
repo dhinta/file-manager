@@ -1,13 +1,19 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import {
     ContextMenuClientRect,
+    ContextMenuItemType,
     ContextMenuState,
 } from '../../../models/context-menu';
 
+interface Props extends ContextMenuState {
+    action: (type: ContextMenuItemType) => void;
+}
+
 export default function ContextMenu({
-    items,
     event,
-}: ContextMenuState): JSX.Element {
+    items,
+    action,
+}: Props): JSX.Element {
     const ref = useRef<HTMLDivElement>(null);
     const [position, setPosition] = useState<ContextMenuClientRect>(event);
 
@@ -35,7 +41,7 @@ export default function ContextMenu({
                     <li key={index}>
                         <button
                             className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left"
-                            onClick={() => console.log(item, position)}
+                            onClick={() => action(item.type)}
                         >
                             {item.text}
                         </button>

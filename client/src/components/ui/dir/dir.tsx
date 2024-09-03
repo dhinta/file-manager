@@ -1,12 +1,16 @@
-import { KeyboardEvent, useState } from 'react';
+import { KeyboardEvent } from 'react';
+import { Directory } from '../../../models/context-menu';
 import { KeyCode } from '../../../models/key-code';
 
-interface Props {
-    name?: string;
+interface Props extends Directory {
+    setDirName?: (name: string) => void;
 }
 
-export default function Dir({ name = '' }: Props) {
-    const [dirName, setDirName] = useState(name);
+export default function Dir({
+    dirName,
+    position,
+    setDirName = () => {},
+}: Props) {
     const opacity = dirName ? 'opacity-100' : 'opacity-60';
 
     const saveDirName = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -17,7 +21,8 @@ export default function Dir({ name = '' }: Props) {
 
     return (
         <div
-            className={`w-12 flex justify-center items-center`}
+            className={`w-12 flex justify-center items-center absolute`}
+            style={position}
             onContextMenu={(e) => {
                 e.preventDefault();
                 e.stopPropagation();

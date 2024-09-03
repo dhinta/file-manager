@@ -22,7 +22,7 @@ export const MenuContext = createContext<MenuContextType>({
 });
 
 export function reducer(
-    state: ContextMenuState,
+    state: ContextMenuState = initialState,
     action: ContextMenuAction
 ): ContextMenuState {
     switch (action.type) {

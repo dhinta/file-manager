@@ -10,7 +10,7 @@ export enum ContextMenuActionType {
 
 export interface ContextMenuAction {
     type: ContextMenuActionType;
-    payload: Partial<ContextMenuState>;
+    payload?: Partial<ContextMenuState>;
 }
 
 export interface ContextMenuState {
@@ -25,11 +25,19 @@ export enum ContextMenuItemType {
     OPEN = 'Open',
     EMPTY_BIN = 'Empty Bin',
     RESTORE = 'Restore items',
+    SHORT_CUT = 'Shortcut',
 }
 
 export interface ContextMenuItem {
     text: string;
     type: ContextMenuItemType;
+}
+
+export interface Directory {
+    type: ContextMenuItemType;
+    position: ContextMenuClientRect;
+    parent: string;
+    dirName: string;
 }
 
 export const DESKTOP_CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
@@ -40,6 +48,10 @@ export const DESKTOP_CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
     {
         text: 'New Folder',
         type: ContextMenuItemType.NEW_FOLDER,
+    },
+    {
+        text: 'New Shortcut',
+        type: ContextMenuItemType.SHORT_CUT,
     },
     {
         text: 'Change Background',

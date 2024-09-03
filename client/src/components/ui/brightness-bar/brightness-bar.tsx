@@ -12,7 +12,8 @@ export default function BrightnessBar({ onClose }: Props): JSX.Element {
 
     useKeyUp(KeyCode.ESC, onClose);
 
-    document.body.style.opacity = brightness / 100 + '';
+    document.getElementById('app-container')!.style.opacity =
+        brightness / 100 + '';
 
     return (
         <div className="flex fixed bottom-11 right-0 bg-sky-900 w-96 py-6">
