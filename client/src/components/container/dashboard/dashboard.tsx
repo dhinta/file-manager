@@ -6,10 +6,11 @@ import {
     reducer,
 } from '../../../context/menu-context';
 import {
+    Asset,
+    AssetDetails,
     ContextMenuActionType,
     ContextMenuClientRect,
     ContextMenuItemType,
-    Directory,
 } from '../../../models/context-menu';
 import ContextMenu from '../../ui/context-menu/context-menu';
 import Taskbar from '../../ui/taskbar/taskbar';
@@ -18,20 +19,34 @@ import Desktop from '../desktop/desktop';
 export default function Dashboard(): JSX.Element {
     const [state, dispatch] = useReducer(reducer, initialState);
     const [itemType, setItemType] = useState<ContextMenuItemType>();
-    const [newDir, setNewDir] = useState<Directory | null>(null);
+    const [newAsset, setNewAsset] = useState<Asset | null>(null);
 
-    const createDirectory = (
+    const createAsset = (
         event: ContextMenuClientRect,
+        type = ContextMenuItemType.NEW_FOLDER,
         parent = 'Desktop'
-    ): Directory => {
-        const dir = {
-            type: ContextMenuItemType.NEW_FOLDER,
+    ): Asset => {
+        const AssetDetails: AssetDetails = {
+            type,
             position: {
                 left: event.left,
                 top: event.top,
             },
             parent,
-            dirName: '',
+        };
+
+        const assetPartial =
+            type === ContextMenuItemType.NEW_FOLDER
+                ? {
+                      dirName: '',
+                  }
+                : {
+                      docName: '',
+                  };
+
+        const asset = {
+            ...AssetDetails,
+            ...assetPartial,
         };
 
         dispatch({
@@ -41,23 +56,30 @@ export default function Dashboard(): JSX.Element {
             },
         });
 
-        return dir;
+        return asset;
     };
 
     useEffect(() => {
-        // Save new directory
+        // New asset placeholder - Yet to be created
         if (itemType === ContextMenuItemType.NEW_FOLDER) {
-            const dir = createDirectory(state.event);
-            setNewDir(dir);
+            const dir = createAsset(state.event);
+            setNewAsset(dir);
+        }
+        if (itemType === ContextMenuItemType.TEXT_DOCUMENT) {
+            const doc = createAsset(
+                state.event,
+                ContextMenuItemType.TEXT_DOCUMENT
+            );
+            setNewAsset(doc);
         }
     }, [itemType, state.event]);
 
     useEffect(() => {
         // Remove unsaved directory
-        if (newDir === null) {
+        if (newAsset === null) {
             setItemType(undefined);
         }
-    }, [newDir]);
+    }, [newAsset]);
 
     const contextMenuPortal = state.items.length
         ? createPortal(
@@ -74,7 +96,7 @@ export default function Dashboard(): JSX.Element {
         <>
             {contextMenuPortal}
             <MenuContext.Provider value={{ state, dispatch }}>
-                <Desktop newDir={newDir} setNewDir={setNewDir} />
+                <Desktop newAsset={newAsset} setNewAsset={setNewAsset} />
                 <Taskbar />
             </MenuContext.Provider>
         </>

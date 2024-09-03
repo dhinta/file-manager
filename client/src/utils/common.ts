@@ -1,3 +1,5 @@
+import { Asset, Directory, Doc } from '../models/context-menu';
+
 export type DateFormat = 'long' | 'short';
 export interface CurrentDateTime {
     currentDate: string;
@@ -75,4 +77,12 @@ export function getShortDate() {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear().toString();
     return `${month}-${day}-${year}`;
+}
+
+export function isDirectory(asset: Asset): asset is Directory {
+    return (asset as Directory).dirName !== undefined;
+}
+
+export function isDocument(asset: Asset): asset is Doc {
+    return (asset as Doc).docName !== undefined;
 }

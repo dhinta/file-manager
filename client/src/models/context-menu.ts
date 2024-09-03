@@ -19,7 +19,7 @@ export interface ContextMenuState {
 }
 
 export enum ContextMenuItemType {
-    NEW_FILE = 'New File',
+    TEXT_DOCUMENT = 'New Text Document',
     NEW_FOLDER = 'New Folder',
     CHANGE_BACKGROUND = 'Change Background',
     OPEN = 'Open',
@@ -33,17 +33,26 @@ export interface ContextMenuItem {
     type: ContextMenuItemType;
 }
 
-export interface Directory {
+export interface AssetDetails {
     type: ContextMenuItemType;
     position: ContextMenuClientRect;
     parent: string;
+}
+
+export interface Directory extends AssetDetails {
     dirName: string;
 }
 
+export interface Doc extends AssetDetails {
+    docName: string;
+}
+
+export type Asset = Doc | Directory;
+
 export const DESKTOP_CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
     {
-        text: 'New File',
-        type: ContextMenuItemType.NEW_FILE,
+        text: 'New Text Document',
+        type: ContextMenuItemType.TEXT_DOCUMENT,
     },
     {
         text: 'New Folder',

@@ -1,25 +1,23 @@
 import { MouseEvent, useContext, useState } from 'react';
 import { MenuContext } from '../../../context/menu-context';
 import {
+    Asset,
     ContextMenuActionType,
     ContextMenuItemType,
     DESKTOP_CONTEXT_MENU_ITEMS,
-    Directory,
 } from '../../../models/context-menu';
+import { isDirectory, isDocument } from '../../../utils/common';
 import Bin from '../../ui/bin/bin';
 import Dir from '../../ui/dir/dir';
+import Document from '../../ui/document/document';
 
 interface Props {
-    // itemType?: ContextMenuItemType;
-    // setItemType: React.Dispatch<
-    //     React.SetStateAction<ContextMenuItemType | undefined>
-    // >;
-    newDir: Directory | null;
-    setNewDir: React.Dispatch<React.SetStateAction<Directory | null>>;
+    newAsset: Asset | null;
+    setNewAsset: React.Dispatch<React.SetStateAction<Asset | null>>;
 }
 
 // Temp DB
-const DIRECTORIES: Directory[] = [
+const ASSETS: Asset[] = [
     {
         type: ContextMenuItemType.NEW_FOLDER,
         position: {
@@ -27,22 +25,24 @@ const DIRECTORIES: Directory[] = [
             top: 500,
         },
         parent: 'Desktop',
-        dirName: 'My file',
+        dirName: 'My Folder',
     },
     {
-        type: ContextMenuItemType.NEW_FOLDER,
+        type: ContextMenuItemType.TEXT_DOCUMENT,
         position: {
             left: 700,
             top: 150,
         },
         parent: 'Desktop',
-        dirName: 'Your Folder',
+        docName: 'My File',
     },
 ];
 
-export default function Desktop({ newDir, setNewDir }: Props): JSX.Element {
+export default function Desktop({ newAsset, setNewAsset }: Props): JSX.Element {
     const { dispatch } = useContext(MenuContext);
-    const [directories, setDirectories] = useState<Directory[]>(DIRECTORIES);
+    const [assets, setAssets] = useState<Asset[]>(ASSETS);
+
+    console.log(assets);
 
     const onDesktopRightClick = (e: MouseEvent) => {
         e.preventDefault();
@@ -66,32 +66,58 @@ export default function Desktop({ newDir, setNewDir }: Props): JSX.Element {
             },
         });
 
-        if (newDir) {
-            setNewDir(null);
+        if (newAsset) {
+            setNewAsset(null);
         }
     };
 
-    const saveDirectory = (dir: Directory) => {
-        setNewDir(null);
-        setDirectories((dirs) => [...dirs, dir]);
+    const saveAsset = (asset: Asset) => {
+        setNewAsset(null);
+        setAssets((assets) => [...assets, asset]);
     };
 
-    const directoriesTemplate = directories
-        .filter(({ type }) => type === ContextMenuItemType.NEW_FOLDER)
-        .map((dir) => <Dir key={dir.dirName} {...dir} />);
+    const newAssetPlaceholder = (asset: Asset | null) => {
+        if (!asset) return null;
 
-    const newDirectoryTemplate = newDir && !newDir.dirName && (
-        <Dir
-            key={newDir.dirName}
-            {...newDir}
-            setDirName={(dirName) =>
-                saveDirectory({
-                    ...newDir,
-                    dirName,
-                })
-            }
-        />
-    );
+        if (isDirectory(asset) && asset.dirName === '') {
+            return (
+                <Dir
+                    key="new_directory"
+                    {...asset}
+                    setDirName={(dirName) =>
+                        saveAsset({
+                            ...newAsset,
+                            dirName,
+                        } as Asset)
+                    }
+                />
+            );
+        }
+        if (isDocument(asset) && asset.docName === '') {
+            return (
+                <Document
+                    key="new_document"
+                    {...asset}
+                    setDocName={(docName) =>
+                        saveAsset({
+                            ...newAsset,
+                            docName,
+                        } as Asset)
+                    }
+                />
+            );
+        }
+    };
+
+    const assetsTemplate = assets.map((dir) => {
+        if (isDirectory(dir)) {
+            return <Dir key={dir.dirName} {...dir} />;
+        } else {
+            return <Document key={dir.docName} {...dir} />;
+        }
+    });
+
+    const newAssetTemplate = newAssetPlaceholder(newAsset);
 
     return (
         <div
@@ -104,8 +130,9 @@ export default function Desktop({ newDir, setNewDir }: Props): JSX.Element {
         >
             <div className="inline-flex flex-col gap-8">
                 <Bin type="empty" />
-                {directoriesTemplate}
-                {newDirectoryTemplate}
+                {assetsTemplate}
+
+                {newAssetTemplate}
             </div>
         </div>
     );
