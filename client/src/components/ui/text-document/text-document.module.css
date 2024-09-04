@@ -1,0 +1,15 @@
+.title {
+    background-color: #e0f1f5;
+}
+
+.notepad {
+    min-height: 24rem;
+    height: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: pre-wrap;
+}
+
+.notepad:focus {
+    outline: 1px solid #66cccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

@@ -10,6 +10,7 @@ import { isDirectory, isDocument } from '../../../utils/common';
 import Bin from '../../ui/bin/bin';
 import Dir from '../../ui/dir/dir';
 import Document from '../../ui/document/document';
+import TextDocument from '../../ui/text-document/text-document';
 
 interface Props {
     newAsset: Asset | null;
@@ -130,6 +131,7 @@ export default function Desktop({ newAsset, setNewAsset }: Props): JSX.Element {
         >
             <div className="inline-flex flex-col gap-8">
                 <Bin type="empty" />
+                <TextDocument />
                 {assetsTemplate}
 
                 {newAssetTemplate}
