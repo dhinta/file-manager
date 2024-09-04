@@ -1,8 +1,16 @@
 import { useEffect, useRef } from 'react';
 import styles from './text-document.module.css';
 
+interface Refs {
+    title: HTMLDivElement | null;
+    editor: HTMLDivElement | null;
+}
+
 export default function TextDocument(): JSX.Element {
-    const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef<Refs>({
+        title: null,
+        editor: null,
+    });
     const noEmit = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
@@ -11,18 +19,17 @@ export default function TextDocument(): JSX.Element {
     const onSave = (e: React.KeyboardEvent) => {
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
             e.preventDefault();
-            console.log(ref.current?.innerHTML);
+            console.log(ref.current.editor!.innerHTML);
         }
     };
 
     useEffect(() => {
-        const editor = ref.current!;
+        const editor = ref.current.editor!;
 
         const callback = (entries: ResizeObserverEntry[]) => {
             const entry = entries[0].borderBoxSize[0];
             const width = entry.inlineSize;
-            document.getElementById('text-document-title')!.style.width =
-                `${width}px`;
+            ref.current.title!.style.width = `${width}px`;
         };
         const observer = new ResizeObserver(callback);
         observer.observe(editor.parentElement!);
@@ -37,7 +44,7 @@ export default function TextDocument(): JSX.Element {
             onClick={noEmit}
         >
             <div
-                id="text-document-title"
+                ref={(element) => (ref.current!.title = element)}
                 className={`${styles.title} flex justify-between items-center py-2 px-4 font-bold`}
             >
                 <span>Text Document</span>
@@ -52,7 +59,7 @@ export default function TextDocument(): JSX.Element {
             </div>
             <div className=" h-[24rem] overflow-y-auto overflow-x-hidden resize bg-white">
                 <div
-                    ref={ref}
+                    ref={(element) => (ref.current!.editor = element)}
                     className={`${styles.notepad} p-1`}
                     contentEditable
                     suppressContentEditableWarning={true}
