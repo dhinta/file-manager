@@ -10,7 +10,6 @@ import { isDirectory, isDocument } from '../../../utils/common';
 import Bin from '../../ui/bin/bin';
 import Dir from '../../ui/dir/dir';
 import Document from '../../ui/document/document';
-import TextDocument from '../../ui/text-document/text-document';
 
 interface Props {
     newAsset: Asset | null;
@@ -26,7 +25,7 @@ const ASSETS: Asset[] = [
             top: 500,
         },
         parent: 'Desktop',
-        dirName: 'My Folder',
+        name: 'My Folder',
     },
     {
         type: ContextMenuItemType.TEXT_DOCUMENT,
@@ -35,15 +34,13 @@ const ASSETS: Asset[] = [
             top: 150,
         },
         parent: 'Desktop',
-        docName: 'My File',
+        name: 'My File',
     },
 ];
 
 export default function Desktop({ newAsset, setNewAsset }: Props): JSX.Element {
     const { dispatch } = useContext(MenuContext);
     const [assets, setAssets] = useState<Asset[]>(ASSETS);
-
-    console.log(assets);
 
     const onDesktopRightClick = (e: MouseEvent) => {
         e.preventDefault();
@@ -72,51 +69,67 @@ export default function Desktop({ newAsset, setNewAsset }: Props): JSX.Element {
         }
     };
 
-    const saveAsset = (asset: Asset) => {
+    const saveAsset = (asset: Asset, assets: Asset[]): void => {
+        const isNameExists = assets.some(({ name }) => name === asset.name);
+        if (isNameExists) {
+            asset.name = `${asset.name}-${Math.ceil(Math.random() * 100)}`;
+            return saveAsset(asset, assets);
+        }
         setNewAsset(null);
         setAssets((assets) => [...assets, asset]);
     };
 
-    const newAssetPlaceholder = (asset: Asset | null) => {
+    const newAssetPlaceholder = (asset: Asset | null): JSX.Element | null => {
         if (!asset) return null;
+        if (asset.name !== '') return null;
 
-        if (isDirectory(asset) && asset.dirName === '') {
+        if (isDirectory(asset)) {
             return (
                 <Dir
                     key="new_directory"
                     {...asset}
-                    setDirName={(dirName) =>
-                        saveAsset({
-                            ...newAsset,
-                            dirName,
-                        } as Asset)
+                    setDirName={(name) =>
+                        saveAsset(
+                            {
+                                ...asset,
+                                name,
+                            },
+                            assets
+                        )
                     }
                 />
             );
         }
-        if (isDocument(asset) && asset.docName === '') {
+        if (isDocument(asset)) {
             return (
                 <Document
                     key="new_document"
                     {...asset}
-                    setDocName={(docName) =>
-                        saveAsset({
-                            ...newAsset,
-                            docName,
-                        } as Asset)
+                    setDocName={(name) =>
+                        saveAsset(
+                            {
+                                ...asset,
+                                name,
+                            },
+                            assets
+                        )
                     }
                 />
             );
         }
+
+        return null;
     };
 
     const assetsTemplate = assets.map((dir) => {
         if (isDirectory(dir)) {
-            return <Dir key={dir.dirName} {...dir} />;
+            return <Dir key={dir.name} {...dir} />;
         } else {
-            return <Document key={dir.docName} {...dir} />;
+            return <Document key={dir.name} {...dir} />;
         }
     });
+
+    console.log(newAsset);
 
     const newAssetTemplate = newAssetPlaceholder(newAsset);
 
@@ -131,7 +144,7 @@ export default function Desktop({ newAsset, setNewAsset }: Props): JSX.Element {
         >
             <div className="inline-flex flex-col gap-8">
                 <Bin type="empty" />
-                <TextDocument />
+                {/* <TextDocument /> */}
                 {assetsTemplate}
 
                 {newAssetTemplate}

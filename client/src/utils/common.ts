@@ -1,4 +1,9 @@
-import { Asset, Directory, Doc } from '../models/context-menu';
+import {
+    Asset,
+    ContextMenuItemType,
+    Directory,
+    Doc,
+} from '../models/context-menu';
 
 export type DateFormat = 'long' | 'short';
 export interface CurrentDateTime {
@@ -80,9 +85,9 @@ export function getShortDate() {
 }
 
 export function isDirectory(asset: Asset): asset is Directory {
-    return (asset as Directory).dirName !== undefined;
+    return (asset as Directory).type === ContextMenuItemType.NEW_FOLDER;
 }
 
 export function isDocument(asset: Asset): asset is Doc {
-    return (asset as Doc).docName !== undefined;
+    return (asset as Doc).type === ContextMenuItemType.TEXT_DOCUMENT;
 }

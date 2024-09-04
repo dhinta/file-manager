@@ -28,23 +28,28 @@ export enum ContextMenuItemType {
     SHORT_CUT = 'Shortcut',
 }
 
+export enum AssetType {
+    DIRECTORY = 'Directory',
+    DOCUMENT = 'Document',
+}
+
 export interface ContextMenuItem {
     text: string;
     type: ContextMenuItemType;
 }
 
 export interface AssetDetails {
-    type: ContextMenuItemType;
     position: ContextMenuClientRect;
     parent: string;
+    name: string;
 }
 
 export interface Directory extends AssetDetails {
-    dirName: string;
+    type: ContextMenuItemType.NEW_FOLDER;
 }
 
 export interface Doc extends AssetDetails {
-    docName: string;
+    type: ContextMenuItemType.TEXT_DOCUMENT;
 }
 
 export type Asset = Doc | Directory;

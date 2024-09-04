@@ -7,7 +7,6 @@ import {
 } from '../../../context/menu-context';
 import {
     Asset,
-    AssetDetails,
     ContextMenuActionType,
     ContextMenuClientRect,
     ContextMenuItemType,
@@ -26,27 +25,17 @@ export default function Dashboard(): JSX.Element {
         type = ContextMenuItemType.NEW_FOLDER,
         parent = 'Desktop'
     ): Asset => {
-        const AssetDetails: AssetDetails = {
-            type,
+        const asset: Asset = {
+            name: '',
             position: {
                 left: event.left,
                 top: event.top,
             },
             parent,
-        };
-
-        const assetPartial =
-            type === ContextMenuItemType.NEW_FOLDER
-                ? {
-                      dirName: '',
-                  }
-                : {
-                      docName: '',
-                  };
-
-        const asset = {
-            ...AssetDetails,
-            ...assetPartial,
+            type:
+                type === ContextMenuItemType.NEW_FOLDER
+                    ? ContextMenuItemType.NEW_FOLDER
+                    : ContextMenuItemType.TEXT_DOCUMENT,
         };
 
         dispatch({

@@ -1,4 +1,4 @@
-import { KeyboardEvent } from 'react';
+import { KeyboardEvent, useState } from 'react';
 import { Doc } from '../../../models/context-menu';
 import { KeyCode } from '../../../models/key-code';
 
@@ -7,11 +7,12 @@ interface Props extends Doc {
 }
 
 export default function Document({
-    docName,
+    name,
     position,
     setDocName = () => {},
 }: Props) {
-    const opacity = docName ? 'opacity-100' : 'opacity-60';
+    const [selected, setSelected] = useState(false);
+    const opacity = name ? 'opacity-100' : 'opacity-60';
 
     const saveDocName = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === KeyCode.ENTER) {
@@ -21,27 +22,32 @@ export default function Document({
 
     return (
         <div
-            className={`w-12 flex justify-center items-center absolute`}
+            className={`w-14 flex justify-center items-center absolute`}
             style={position}
             onContextMenu={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
             }}
         >
-            <button>
+            <button
+                className={`${selected ? 'bg-sky-400 text-slate-600' : 'text-white'} p-1`}
+                onClick={() => setSelected(true)}
+                onBlur={() => setSelected(false)}
+            >
                 <img
                     src={`/public/images/text-doc.png`}
                     alt="Folder"
                     className={`${opacity}`}
                 />
-                {docName ? (
-                    <div className="text-white text-xs mt-1">{docName}</div>
+                {name ? (
+                    <div className="text-white text-xs mt-1">{name}</div>
                 ) : (
                     <input
                         type="text"
                         className="text-gray-900 border-none outline-none text-xs w-full"
                         autoFocus
                         onKeyUp={saveDocName}
+                        onClick={(e) => e.stopPropagation()}
                     />
                 )}
             </button>
