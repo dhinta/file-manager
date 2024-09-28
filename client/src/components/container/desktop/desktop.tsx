@@ -3,7 +3,6 @@ import { MenuContext } from '../../../context/menu-context';
 import {
     Asset,
     ContextMenuActionType,
-    ContextMenuItemType,
     DESKTOP_CONTEXT_MENU_ITEMS,
 } from '../../../models/context-menu';
 import { isDirectory, isDocument } from '../../../utils/common';
@@ -18,24 +17,24 @@ interface Props {
 
 // Temp DB
 const ASSETS: Asset[] = [
-    {
-        type: ContextMenuItemType.NEW_FOLDER,
-        position: {
-            left: 200,
-            top: 500,
-        },
-        parent: 'Desktop',
-        name: 'My Folder',
-    },
-    {
-        type: ContextMenuItemType.TEXT_DOCUMENT,
-        position: {
-            left: 700,
-            top: 150,
-        },
-        parent: 'Desktop',
-        name: 'My File',
-    },
+    // {
+    //     type: ContextMenuItemType.NEW_FOLDER,
+    //     position: {
+    //         left: 200,
+    //         top: 500,
+    //     },
+    //     parent: 'Desktop',
+    //     name: 'My Folder',
+    // },
+    // {
+    //     type: ContextMenuItemType.TEXT_DOCUMENT,
+    //     position: {
+    //         left: 700,
+    //         top: 150,
+    //     },
+    //     parent: 'Desktop',
+    //     name: 'My File',
+    // },
 ];
 
 export default function Desktop({ newAsset, setNewAsset }: Props): JSX.Element {
@@ -128,8 +127,6 @@ export default function Desktop({ newAsset, setNewAsset }: Props): JSX.Element {
             return <Document key={dir.name} {...dir} />;
         }
     });
-
-    console.log(newAsset);
 
     const newAssetTemplate = newAssetPlaceholder(newAsset);
 

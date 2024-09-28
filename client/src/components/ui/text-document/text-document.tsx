@@ -1,20 +1,22 @@
 import { useEffect, useRef } from 'react';
+import { noEmit } from '../../../utils/common';
 import styles from './text-document.module.css';
+
+interface Props {
+    name: string;
+    onClose: () => void;
+}
 
 interface Refs {
     title: HTMLDivElement | null;
     editor: HTMLDivElement | null;
 }
 
-export default function TextDocument(): JSX.Element {
+export default function TextDocument({ name, onClose }: Props): JSX.Element {
     const ref = useRef<Refs>({
         title: null,
         editor: null,
     });
-    const noEmit = (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
 
     const onSave = (e: React.KeyboardEvent) => {
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
@@ -39,7 +41,7 @@ export default function TextDocument(): JSX.Element {
 
     return (
         <div
-            className="font-mono w-[40rem] z-10"
+            className="font-mono w-[40rem] z-10 fixed top-20 left-20"
             onContextMenu={noEmit}
             onClick={noEmit}
         >
@@ -47,9 +49,9 @@ export default function TextDocument(): JSX.Element {
                 ref={(element) => (ref.current!.title = element)}
                 className={`${styles.title} flex justify-between items-center py-2 px-4 font-bold`}
             >
-                <span>Text Document</span>
+                <span>{name}</span>
 
-                <button>
+                <button onClick={onClose}>
                     <img
                         className="w-3 h-3"
                         src="./public/images/close.png"

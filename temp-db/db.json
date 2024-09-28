@@ -1,17 +1,30 @@
 {
-    "users": [
-        {
-            "id": 1,
-            "username": "dhinta",
-            "password": "123456"
-        },
-        {
-            "id": 2,
-            "username": "frodoBaggins",
-            "password": "123456"
-        }
-    ],
-    "folders": [],
-    "files": [],
-    "assets": []
+  "users": [
+    {
+      "id": 1,
+      "username": "dhinta",
+      "password": "123456"
+    },
+    {
+      "id": 2,
+      "username": "frodoBaggins",
+      "password": "123456"
+    }
+  ],
+  "folders": [],
+  "files": [],
+  "assets": [
+    {
+      "file": "dolomites-sunrise.jpg",
+      "text": "Dolomites at Sunrise (Italy)"
+    },
+    {
+      "file": "dark-mode-blue.jpg",
+      "text": "Dark Mode Windows Abstract"
+    },
+    {
+      "file": "beautiful-place.jpg",
+      "text": "The bridge on the river Kwai (China)"
+    }
+  ]
 }

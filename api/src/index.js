@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import screenRouter from './routes/screens.js';
 import userRouter from './routes/users.js';
 dotenv.config();
 
@@ -21,5 +22,6 @@ app.get('/', requestForbidden);
 app.get('/api', requestForbidden);
 
 app.use('/api/users', userRouter);
+app.use('/api/screens', screenRouter);
 
 app.listen(PORT, () => console.log(`server running on port ${PORT}`));

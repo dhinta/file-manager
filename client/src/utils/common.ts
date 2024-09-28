@@ -91,3 +91,8 @@ export function isDirectory(asset: Asset): asset is Directory {
 export function isDocument(asset: Asset): asset is Doc {
     return (asset as Doc).type === ContextMenuItemType.TEXT_DOCUMENT;
 }
+
+export function noEmit(e: React.MouseEvent | React.KeyboardEvent): void {
+    e.preventDefault();
+    e.stopPropagation();
+}
