@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSessionStorage from '../../../hooks/session-storage';
 import { getInitials } from '../../../utils/common';
@@ -12,41 +12,51 @@ interface FormData {
 const initialsSessionKey = 'loggedInUser';
 
 export function Login(): JSX.Element {
+    const loggedInUserStorage = useSessionStorage();
     const [formData, setFormData] = useState<FormData>({
         username: '',
         password: '',
     });
-    const userNameRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
-    const navigate = useNavigate();
-
-    const loggedInUserStorage = useSessionStorage();
-    const loggedInUserName = getInitials(
+    const [hasError, setHasError] = useState(false);
+    const [currentUserName, setCurrentUserName] = useState(
         loggedInUserStorage.get(initialsSessionKey)
     );
+    const inputRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const handler = () => setHasError(false);
+
+        if (hasError) {
+            inputRef.current?.addEventListener('animationend', handler);
+        }
+
+        return () => {
+            inputRef.current?.removeEventListener('animationend', handler);
+        };
+    }, [hasError]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const removeErrorClass = (elem: HTMLInputElement | null) => {
-            setTimeout(() => elem?.classList.remove(styles.error), 500);
-        };
-
         const { username, password } = formData;
 
-        if (username === '' && loggedInUserName === '') {
-            userNameRef.current?.classList.add(styles.error);
-            removeErrorClass(userNameRef.current);
-            return;
-        } else if (password === '') {
-            passwordRef.current?.classList.add(styles.error);
-            removeErrorClass(passwordRef.current);
+        if (username === '' || username.trim().length < 3) {
+            setHasError(true);
             return;
         }
 
-        if (!loggedInUserName) {
+        if (!currentUserName && username.trim() !== '') {
             loggedInUserStorage.set(initialsSessionKey, username);
+            setCurrentUserName(username.trim());
+            return;
         }
+
+        if (currentUserName && password === '') {
+            setHasError(true);
+            return;
+        }
+
         navigate('/dashboard');
     };
 
@@ -54,24 +64,25 @@ export function Login(): JSX.Element {
         <div className={styles.login}>
             <div className={styles.userInput}>
                 <div className={styles.loginBox}>
-                    {loggedInUserName && (
-                        <div className="flex flex-col align-center">
-                            <img
-                                src="public/images/icon.png"
-                                className={styles.profileIcon}
-                            />
-                            <p className={styles.name}>{loggedInUserName}</p>
-                        </div>
-                    )}
+                    <div className="flex flex-col align-center">
+                        <img
+                            src="public/images/icon.png"
+                            className={styles.profileIcon}
+                        />
+                        {currentUserName && (
+                            <p className={styles.name}>
+                                {getInitials(currentUserName)}
+                            </p>
+                        )}
+                    </div>
                     <form onSubmit={handleSubmit} className="flex flex-col">
-                        {!loggedInUserName && (
+                        {!currentUserName && (
                             <>
-                                <p className={styles.name}>Login</p>
                                 <input
                                     placeholder="Username"
-                                    className={styles.formInput}
+                                    className={`${styles.formInput} ${hasError ? styles.error : ''}`}
                                     autoFocus
-                                    ref={userNameRef}
+                                    ref={inputRef}
                                     value={formData.username}
                                     onChange={(event) =>
                                         setFormData((data) => ({
@@ -82,26 +93,29 @@ export function Login(): JSX.Element {
                                 />
                             </>
                         )}
-                        <input
-                            type="password"
-                            className={styles.formInput}
-                            placeholder="PIN"
-                            ref={passwordRef}
-                            value={formData.password}
-                            onChange={(event) =>
-                                setFormData((data) => ({
-                                    ...data,
-                                    password: event.target.value,
-                                }))
-                            }
-                        />
+                        {currentUserName && (
+                            <input
+                                type="password"
+                                className={`${styles.formInput} ${hasError ? styles.error : ''}`}
+                                autoFocus
+                                placeholder="PIN"
+                                ref={inputRef}
+                                value={formData.password}
+                                onChange={(event) =>
+                                    setFormData((data) => ({
+                                        ...data,
+                                        password: event.target.value,
+                                    }))
+                                }
+                            />
+                        )}
 
                         <button type="submit" className="hidden"></button>
                     </form>
-                    <div className="text-white">
+                    {/* <div className="text-white">
                         <p className={styles.forget}>I forgot my PIN!</p>
                         <p className={styles.options}>New here? Sign Up!</p>
-                    </div>
+                    </div> */}
                 </div>
                 <div className={styles.wrongPassword}>
                     <p>The PIN is incorrect. Try again.</p>

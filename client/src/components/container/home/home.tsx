@@ -22,7 +22,6 @@ export default function Home(): JSX.Element | null {
             try {
                 const data = await fetch('http://localhost:3000/api/screens');
                 const response: BackgroundScreen = await data.json();
-                console.log(response);
 
                 setBackgroundScreen(response);
             } catch (error: unknown) {
