@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "baseUrl": "src",
+        "paths": {
+            "models/*": ["models/*"],
+            "utils/*": ["utils/*"],
+            "hooks/*": ["hooks/*"],
+            "container/*": ["components/container/*"],
+            "ui/*": ["components/ui/*"]
+        }
+    }
+}

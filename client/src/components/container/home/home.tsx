@@ -1,8 +1,9 @@
+import { Login } from 'container/login/login';
+import useKeyUp from 'hooks/key-up';
+import { KeyCode } from 'models/key-code';
+
 import { useEffect, useState } from 'react';
-import useKeyUp from '../../../hooks/key-up';
-import { KeyCode } from '../../../models/key-code';
-import { DateTime } from '../../ui/date-time/date-time';
-import { Login } from '../login/login';
+import { DateTime } from 'ui/date-time/date-time';
 import './home.css';
 
 interface BackgroundScreen {

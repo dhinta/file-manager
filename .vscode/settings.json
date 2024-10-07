@@ -7,5 +7,6 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports": "always"
   },
-  "cSpell.words": ["tailwind", "tailwindcss", "tanstack"]
+  "cSpell.words": ["tailwind", "tailwindcss", "tanstack"],
+  "typescript.preferences.importModuleSpecifier": "shortest"
 }
